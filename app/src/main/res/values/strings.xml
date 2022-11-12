@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Room</string>
     <string name="listName">Dados Salvos</string>
+    <string name="menuSearch">Pesquisar</string>
 </resources>

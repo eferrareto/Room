@@ -3,6 +3,7 @@ package com.example.room
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -43,18 +44,28 @@ class MainActivity : AppCompatActivity() {
                 
                 val app = application as App
                 val dao = app.db.userDao()
+
+                //Função inserir DAO
                 dao.insertUsers(Users(etName.text.toString(), etAge.text.toString().toInt()))
 
+                //Função pegar DAO
                 val response = dao.getAllUsers()
                 list.addAll(response)
 
             }.start()
             val updateList = rc.adapter
             updateList?.notifyDataSetChanged()
-            Toast.makeText(this@MainActivity, "", Toast.LENGTH_LONG).show()
         }
 
         }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    
+
     inner class ListAdapter(val listNames : MutableList<Users>): RecyclerView.Adapter<ListViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
             val inflater = layoutInflater.inflate(R.layout.activity_list, parent, false)
@@ -75,7 +86,9 @@ class MainActivity : AppCompatActivity() {
         fun bind(view : Users){
 
             val names : TextView = itemView.findViewById(R.id.txtNameList)
+            val ages : TextView = itemView.findViewById(R.id.txtAgeList)
             names.text = view.nome
+            ages.text = view.idade.toString()
 
         }
 
