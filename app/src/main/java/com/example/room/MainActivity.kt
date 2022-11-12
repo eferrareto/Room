@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etName : EditText
     private lateinit var etAge : EditText
     private lateinit var btnInsert : Button
+    private lateinit var btnDelete : Button
+    private lateinit var btnUpdate : Button
     private lateinit var rc : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         etName = findViewById(R.id.txtName)
         etAge = findViewById(R.id.txtAge)
         btnInsert = findViewById(R.id.button)
+        btnDelete = findViewById(R.id.buttonDelete)
+        btnUpdate = findViewById(R.id.buttonUpdate)
         rc = findViewById(R.id.recycler)
 
         val list = mutableListOf<Users>()
@@ -40,6 +44,8 @@ class MainActivity : AppCompatActivity() {
 
 
         btnInsert.setOnClickListener{
+            val updateList = rc.adapter
+            updateList?.notifyDataSetChanged()
             Thread{
                 
                 val app = application as App
@@ -53,18 +59,43 @@ class MainActivity : AppCompatActivity() {
                 list.addAll(response)
 
             }.start()
+
+        }
+
+
+        btnDelete.setOnClickListener {
+            Thread {
+
+                val app = application as App
+                val dao = app.db.userDao()
+
+                //Função deletar dados da tabela
+                dao.deleteAll()
+
+            }.start()
             val updateList = rc.adapter
             updateList?.notifyDataSetChanged()
         }
 
+        btnUpdate.setOnClickListener{
+            Thread{
+                val app = application as App
+                val dao = app.db.userDao()
+
+
+            }.start()
+
         }
+
+
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
     }
 
-    
+
 
     inner class ListAdapter(val listNames : MutableList<Users>): RecyclerView.Adapter<ListViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
